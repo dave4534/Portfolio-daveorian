@@ -1,6 +1,6 @@
 # Architecture
 
-How this Framer site should be built. Agents: read this before changing nav, theme, or any code file. Behavior and tooling live in `AGENTS.md`.
+How this Framer site should be built. Agents: read this before changing nav or any code file. Behavior and tooling live in `AGENTS.md`.
 
 ## Source of truth
 
@@ -27,29 +27,15 @@ If native and code both work, present both and wait.
 
 ## Color
 
-**Full contract:** `docs/design.md` — source-of-truth layers, styles table (colors + text), edit workflow, and legacy debt.
+**Light mode only.** Design in Framer **Assets → Colors** and **Assets → Styles** (text/link presets). The canvas is the source of truth for values and wiring.
 
-Summary: design in Framer **Assets → Colors** (Light + Dark on each style); published toggle reads the generated `p4-theme-tokens` head sheet, which must stay in sync. Do not use Light/Dark component variants, `Dark/*` text clones, or raw hex for new work.
+Published sites still need `<style id="p4-theme-tokens">` in `<head>` so token CSS wins over `prefers-color-scheme`. Regenerate from `ColorStyleTokenNode` Light values after color edits, then publish. Head snippet locks `data-framer-theme="light"`.
 
-## Theme
-
-Proved on Portfolio 4 `/data-capture` (live: `sustained-standards-647886.framer.app`). Other pages still use variant switchers until a later rollout.
-
-Light/Dark is **not** a component variant axis anywhere on the site — including nav. One tree per component; look comes from **color/text tokens** plus pre-paint `data-framer-theme` (do not also set `data-theme`). Storage key stays `currentToggleState`.
-
-| Concern | Owner |
-| --- | --- |
-| Light / Dark look | `Theme/*` color styles → mirrored in `p4-theme-tokens` (see `docs/design.md`). Published Framer CSS alone follows `prefers-color-scheme`, not the site toggle. |
-| Toggle motion | CSS on Sun/Moon layers from `html[data-framer-theme]`. Light shows the moon, dark shows the sun (the icon for the other theme). Both icons are 18×18. Visible control is **Nav Button / Theme** (stacked Sun Layer + Moon Layer). Do not drive canvas springs via React `variant`. Do not attach `ThemeToggleButton`. |
-| Remember theme | Head snippet: read `currentToggleState` → set `data-framer-theme` + `colorScheme` before paint, then persist. Click reads the live attribute first (not empty storage), then writes storage + attribute. Listener matches `#p4-theme-toggle`, Sun/Moon layers, or a button with both icons. |
-
-Do not copy leftover numbered exports (`projectNavSwitcher*`, `themeSwitcher`, `variantSwitcher`) onto the archetype. Leave `homePageFrame` in `Theme_Toggle.tsx`. Do not attach `ThemeToggleButton`.
-
-Related cases: `docs/bugs/2026-09-11-project-nav-theme-delay.md`, `docs/bugs/2026-09-10-theme-toggle-icon-spring.md`, `docs/bugs/2026-09-10-section-nav-pink-flash.md`.
+Do not use Light/Dark component variants for color, `Dark/*` text clones, or raw hex for new work. Do not reattach legacy theme exports (`projectNavSwitcher*`, `themeSwitcher`, `variantSwitcher`, `withThemeToggle`). `homePageFrame` in `Theme_Toggle.tsx` is for Home scroll/anchors only.
 
 ## Nav
 
-Applies to **all project pages** (archetype `/data-capture`; same pattern on `/meetings`, `/receptionist`, etc.). Does **not** apply to `/` (Home). Theme mechanics are in **Theme** above.
+Applies to **all project pages** (archetype `/data-capture`; same pattern on `/meetings`, `/receptionist`, etc.). Does **not** apply to `/` (Home).
 
 **One source of truth:** behavior lives in the **`Nav - Project`** component (`HWIvXUQkr`) and this spec. Each page only supplies its own Hero id, post-hero scroll-section id, and `$control__projectName`. Do not fork nav logic per page in code.
 
@@ -69,7 +55,7 @@ All chrome in a given state shares the same styling (border color, text style, e
 Hero content (Rotating Icon + project title) is still in view below the nav. Nav center is empty.
 
 - **Left:** Home button (border + arrow icon).
-- **Right:** Selected Work (Nav Button variant toggle Work Closed ↔ Work Open; Work Open shows the `Work Menu` instance plus a transparent `Menu Scrim` whose tap returns to Work Closed), then Nav Button Theme.
+- **Right:** Selected Work (Nav Button variant toggle Work Closed ↔ Work Open; Work Open shows the `Work Menu` instance plus a transparent `Menu Scrim` whose tap returns to Work Closed).
 - **Center:** empty. Logo + project name live in the hero, not in the nav.
 
 On Landing, the **Brand** cluster inside **Brand Clip** must be hidden (opacity 0 or absent from the published tree).
@@ -121,7 +107,7 @@ Related cases: `docs/bugs/2026-09-11-project-nav-chrome.md`, `docs/bugs/2026-09-
 
 ## Decision gate (every change)
 
-1. Can this be a variant, effect, or color/text style? If yes, do that. Color must be a theme-aware color style (see **Color styles**).
+1. Can this be a variant, effect, or color/text style? If yes, do that. Color must use a Framer color style from Assets → Colors.
 2. If not, smallest override on the existing node.
 3. Do not hide layers or remount to cover a first-paint mismatch.
 4. Do not rebuild old code-heavy work unless asked.

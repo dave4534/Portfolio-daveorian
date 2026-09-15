@@ -1,21 +1,21 @@
 # Design
 
-Contract for layout, color, and text styles on Portfolio 4. Read this before changing fills, text color, borders, theme tokens, or text presets.
+Contract for layout, color, and text styles on Portfolio 4 — Light Mode Only. Read this before changing fills, text color, borders, theme tokens, or text presets.
 
-**Project:** Portfolio 4 · Live: https://sustained-standards-647886.framer.app · Archetype page: `/data-capture`
+**Project:** Portfolio 4 — Light Mode Only · Framer: https://framer.com/projects/Portfolio-4-Light-Mode-Only--eU2uwvvrrUqquu9kReKG · Live: *(update after first publish)* · Archetype page: `/data-capture`
 
 **Pages (2026-09-14):** `/` Home · `/data-capture` · `/meetings` · `/receptionist` · `/customer-view` · `/capacity-planning` · `/seller-coupons` (about-me removed)
 
-**Source of truth:** Framer canvas (Assets → Styles, page structure). This file is the human-readable contract — not served to the site.
+**Source of truth:** Framer canvas (Assets → Styles, page structure). Style **values** live in Framer only — not in this file.
 
 ---
 
 ## Agent rules (styles — read first)
 
-- **Never remove or change styles without asking Dave first.** That means Framer color/text/link presets, token Light/Dark values, node `textColor` / fill wiring, **and rows in the style table below**. Scanning and reporting gaps is fine; edits wait for explicit approval.
+- **Never remove or change styles without asking Dave first.** That means Framer color/text/link presets, node `textColor` / fill wiring, and any style already on the canvas. Scanning and reporting gaps is fine; edits wait for explicit approval.
 - **Permission gate (Framer):** Do **not** create or apply any Framer style unless Dave explicitly says **“create that style”** or **“apply that style”**. “Scan”, “check”, or “update” alone is **not** permission.
-- **Never create new color styles** in Framer (`+ColorStyleTokenNode`, etc.) without **“create that style”**. When applying, only update values/wiring for styles **already in the table below**.
-- If a row is missing from the table, **stop and ask** — Dave adds the row first.
+- **Never create new color styles** in Framer (`+ColorStyleTokenNode`, etc.) without **“create that style”**.
+- **Do not treat this doc as a style value reference.** Read values from Framer Assets → Colors / Text styles, or from the canvas.
 
 ---
 
@@ -33,19 +33,20 @@ Contract for layout, color, and text styles on Portfolio 4. Read this before cha
 
 ---
 
-## Color — three layers
+## Color
 
-| Layer | Where it lives | Role | Edit here? |
-| --- | --- | --- | --- |
-| **Design** | Framer → **Assets → Styles → Colors** | Named styles (`Theme/*`) with **Light** and **Dark** values. | **Yes — primary edit** |
-| **Runtime (published)** | Custom Code → `<style id="p4-theme-tokens">` in `<head>` | Mirrors color styles as `--token-{uuid}` under `html[data-framer-theme="light\|dark"]`. | **No — regenerate from design layer** |
-| **Contract (this repo)** | `docs/design.md` (this table) | Expected values and mappings. | Update when Dave changes a style |
+| Layer | Where it lives | Role |
+| --- | --- | --- |
+| **Design** | Framer → **Assets → Styles → Colors** (and text/link presets) | Named styles (`Theme/*`, etc.). **Light mode only** — edit Light values on the canvas. |
+| **Runtime (published)** | Custom Code → `<style id="p4-theme-tokens">` in `<head>` | Mirrors color styles as `--token-{uuid}`; head snippet locks `data-framer-theme="light"`. Regenerate after color edits — do not hand-edit. |
 
-**Rule:** Edit in Assets → Colors → regenerate `p4-theme-tokens` → publish → verify live with theme toggle.
+**Rule:** Edit in Assets → Colors → regenerate `p4-theme-tokens` → publish → verify live.
 
 ---
 
-## Styles (colors + text — single table)
+## Styles (colors + text — archived table)
+
+<!-- Retired: style values are owned by the Framer canvas (Assets → Colors / Text). Do not use this table as a contract or for agent edits.
 
 One table. Do not split into sub-tables without Dave’s approval.
 
@@ -98,30 +99,31 @@ One table. Do not split into sub-tables without Dave’s approval.
 
 Token UUIDs: query Framer `ColorStyleTokenNode` by name, or inspect `--token-*` on the live site.
 
+-->
+
 ---
 
 ## Workflow
 
-1. **Edit** the color style in Assets → Colors (set both Light and Dark).
-2. **Confirm** nodes reference that style (not raw hex), unless the row above says fixed override.
+1. **Edit** the color style in Framer Assets → Colors (Light value).
+2. **Confirm** nodes reference that style (not raw hex), unless a fixed override is documented on the canvas.
 3. **Regenerate** `p4-theme-tokens` from all `ColorStyleTokenNode`s.
-4. **Publish** and verify on the live URL with the theme toggle.
-
-Regression: `checks/theme-flash.mjs` (pins `Theme/Background`).
+4. **Publish** and verify on the live URL.
 
 ---
 
 ## Do not use
 
-- **Light/Dark component variants** for color — theme is not a variant axis.
+- **Light/Dark component variants** for color.
 - **`Dark/*` text style clones** — point text styles at a color style instead.
-- **Raw hex/rgb on nodes** — debt; do not copy forward (except **Audit** fixed colors above).
+- **Raw hex/rgb on nodes** — debt; do not copy forward (except documented fixed overrides on the canvas, e.g. Audit).
 - **Code overrides for color** — except `p4-theme-tokens`, scroll-spy CSS, and documented Audit overrides.
+- **This file’s archived styles table** — Framer canvas only.
 
 ---
 
 ## Related
 
-- Nav/theme policy: `docs/architecture.md`
+- Nav policy: `docs/architecture.md`
 - Token sheet bugs: `docs/bugs/2026-09-12-menu-dark-in-light.md`, `docs/bugs/2026-09-12-rotating-icon-color-controls.md`
 - Legacy color debt (~97 styles): `docs/plans/2026-09-11-portfolio-4-rearchitecture.md` Phase 2

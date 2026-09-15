@@ -1,16 +1,22 @@
 # This workspace
 
-This folder is a sidecar around a **Framer website**. The canvas in Framer is the source of truth. Local files here are notes, bug cases, debug logs, and snapshots — not the site.
+Sidecar for **Portfolio 4 — Light Mode Only** (Framer duplicate). Active iteration to remove dark mode.
 
-**Architecture** (native-first, theme/nav, when code is allowed): `docs/architecture.md`. Read it before changing nav, theme, color, or any code file.
+**Framer project:** https://framer.com/projects/Portfolio-4-Light-Mode-Only--eU2uwvvrrUqquu9kReKG  
+**Git branch:** `light-mode-only`  
+**Revert reference:** `../Portfolio 4 - Light and Dark Archive/` · branch `light-and-dark-mode` · original Framer project (Portfolio 4)
 
-**Design contract:** `docs/design.md` — breakpoints, **single styles table** (colors + text), `p4-theme-tokens` workflow. **Audit** fill is always `#000000`.
+The canvas in Framer is the source of truth. Local files here are notes, bug cases, debug logs, and snapshots — not the site.
 
-**Styles (mandatory):** **Never remove or change styles** (Framer or doc table rows) **without asking Dave first.** Do **not** create or apply Framer styles unless Dave says **“create that style”** or **“apply that style”**. Scanning and reporting gaps is fine; edits wait for approval. See `docs/design.md` agent rules.
+**Architecture** (native-first, nav, when code is allowed): `docs/architecture.md`. Read it before changing nav, color, or any code file.
+
+**Design contract:** `docs/design.md` — breakpoints, color/token workflow. Style **values** come from the Framer canvas only (not the archived table in that file).
+
+**Styles (mandatory):** **Never remove or change styles** (Framer presets or canvas wiring) **without asking Dave first.** Do **not** create or apply Framer styles unless Dave says **“create that style”** or **“apply that style”**. Scanning and reporting gaps is fine; edits wait for approval. See `docs/design.md` agent rules.
 
 ## How to edit the site
 
-1. Use **Framer MCP / Framer Agent** (`npx @framer/agent@latest` after loading the Framer skill). Open a session, reuse it for the rest of the conversation, and follow the generated project task map.
+1. Use **Framer MCP / Framer Agent** (`npx @framer/agent@latest` after loading the Framer skill). Auth and open a session against the **Light Mode Only** project URL above. Reuse the session for the rest of the conversation.
 2. Do **not** use Unframer MCP unless Framer Agent cannot do the task. Say so when you fall back.
 3. Do not treat files in this repo as live Framer code. Read and write code files through the Framer Agent code-file APIs.
 
@@ -33,7 +39,7 @@ If a native approach and a code approach both exist, present both and wait unles
 
 Follow `.cursor/rules/bug-log.mdc` and `docs/bugs/`. Live site and Framer Preview often diverge; if the bug is live, measure the live site. Preview is not a substitute.
 
-Theme/nav work is hydration-sensitive: published HTML can be the Light variant while `data-framer-theme` flips earlier. Do not hide layers or remount with React `key` to paper over that.
+Nav work is hydration-sensitive. Do not hide layers or remount with React `key` to paper over first-paint mismatches.
 
 ## Verification and git
 
