@@ -33,6 +33,22 @@ Published sites still need `<style id="p4-theme-tokens">` in `<head>` so token C
 
 Do not use Light/Dark component variants for color, `Dark/*` text clones, or raw hex for new work. Do not reattach legacy theme exports (`projectNavSwitcher*`, `themeSwitcher`, `variantSwitcher`, `withThemeToggle`). `homePageFrame` in `Theme_Toggle.tsx` is for Home scroll/anchors only.
 
+## Home section nav (`/` and `/test`)
+
+Desktop-only fixed **Section Nav** (anchor links + Dave Orian brand reveal). Same behavior on **Home** (`/`) and the **test** scratch page (`/test`). Scroll happens inside `#home-scroll` via `homePageFrame` in `Theme_Toggle.tsx`; `withSectionScrollSpy` in `Dave_s_Overrides.tsx` highlights the active link and toggles the brand.
+
+| Link | Scroll target | Element |
+| --- | --- | --- |
+| Intro | “hi, i'm dave” wordmark | `#hero-wordmark` |
+| Background | “I'm fortunate…” paragraph | `#background` |
+| Work | Work section header | `#work` |
+| Values | “How I work” block | `#values` |
+| Contact | Footer (scroll to bottom) | `#contact` on **Footer - 2** |
+
+Each link href must include the hash (e.g. `/#hero-wordmark`). Do not use bare `/` — `homePageFrame` only intercepts hash clicks. Section element IDs must be unique on the page (only one `#background`; hero subtitle uses `#hero-role`).
+
+**Scroll alignment:** both `homePageFrame` (`scrollSectionToNav`) and `withSectionScrollSpy` use **`Section Nav` top edge** as the alignment line — not nav bottom (which includes the Dave Orian brand block and overshoots by ~232px).
+
 ## Nav
 
 Applies to **all project pages** (archetype `/data-capture`; same pattern on `/meetings`, `/receptionist`, etc.). Does **not** apply to `/` (Home).
