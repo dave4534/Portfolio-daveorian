@@ -19,3 +19,4 @@
 | 2026-09-12 | [rotating-icon-color-controls](2026-09-12-rotating-icon-color-controls.md) | fixed (rim needs Preview) | Puck / edge color controls had no visible effect |
 | 2026-09-13 | [nav-scroll-brand-missing](2026-09-13-nav-scroll-brand-missing.md) | fixed | Scroll past hero: nav stays Landing, Brand Clip empty, no centered logo/title |
 | 2026-09-13 | [theme-icon-stuck-sun](2026-09-13-theme-icon-stuck-sun.md) | fixed, verified live | Theme switcher stays on sun icon after click |
+| 2026-09-29 | [mobile-hero-text-overlap](2026-09-29-mobile-hero-text-overlap.md) | fixed, verified live | Hero intro and italic paragraph overlap on short phone screens |
